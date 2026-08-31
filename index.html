@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>انتظر... ثم اضغط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#12142E;
+    --wait:#FF5A5F;
+    --wait-glow:#FF5A5F55;
+    --ready:#3DDC84;
+    --ready-glow:#3DDC8466;
+    --flicker:#FFC24B;
+    --text:#F4F2EA;
+    --muted:#9096C4;
+    --ring-track:#2A2E63;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse at 30% 15%, #262a5e 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 85%, #21254f 0%, transparent 50%),
+      var(--bg-deep);
+    font-family:'Tajawal', sans-serif;
+    color:var(--text);
+    overflow:hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .stars{
+    position:fixed; inset:0; pointer-events:none; opacity:.5;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, #fff8 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 70% 20%, #fff6 50%, transparent 100%),
+      radial-gradient(1px 1px at 40% 70%, #fff5 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 85% 60%, #fff7 50%, transparent 100%),
+      radial-gradient(1px 1px at 55% 85%, #fff5 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 10% 80%, #fff6 50%, transparent 100%);
+  }
+  .card{
+    position:relative;
+    width:min(440px, 92vw);
+    padding:34px 26px 30px;
+    border-radius:28px;
+    background:linear-gradient(180deg, #191c46cc, #14163acc);
+    border:1px solid #333a7a;
+    box-shadow:0 30px 60px -20px #000a, inset 0 1px 0 #ffffff14;
+    text-align:center;
+    backdrop-filter:blur(6px);
+  }
+  .eyebrow{
+    font-family:'Cairo', sans-serif;
+    font-size:13px;
+    letter-spacing:.5px;
+    color:var(--wait);
+    font-weight:700;
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Cairo', sans-serif;
+    font-size:26px;
+    font-weight:800;
+    margin:0 0 4px;
+    line-height:1.3;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin:0 0 20px;
+  }
+  .stage-label{
+    font-family:'Cairo', sans-serif;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .stage-label b{ color:var(--text); }
+  .stage{
+    position:relative;
+    width:236px;
+    height:236px;
+    margin:0 auto 16px;
+  }
+  svg{ position:absolute; inset:0; transform:rotate(-90deg); }
+  .track{ fill:none; stroke:var(--ring-track); stroke-width:10; }
+  .progress{
+    fill:none;
+    stroke:var(--wait);
+    stroke-width:10;
+    stroke-linecap:round;
+    transition:stroke .25s ease;
+  }
+  .progress.ready{ stroke:var(--ready); }
+  .btn{
+    position:absolute;
+    inset:24px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    font-family:'Cairo', sans-serif;
+    font-weight:800;
+    font-size:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ffe3e3;
+    background:radial-gradient(circle at 35% 30%, #8a2f34, #3d1418);
+    box-shadow:0 0 26px var(--wait-glow);
+    transition:transform .15s ease, box-shadow .3s ease, background .3s ease, color .3s ease;
+    animation:breathe 4s ease-in-out infinite;
+  }
+  .btn.flicker{
+    background:radial-gradient(circle at 35% 30%, #ffe1a0, var(--flicker));
+    color:#3a2400;
+  }
+  .btn.ready{
+    animation:pulseReady 1.1s ease-in-out infinite;
+    background:radial-gradient(circle at 35% 30%, #b9ffdb, var(--ready));
+    color:#013321;
+    box-shadow:0 0 44px 6px var(--ready-glow);
+  }
+  .btn.shake{
+    animation:shake .45s ease;
+  }
+  @keyframes breathe{
+    0%,100%{ transform:scale(.97); }
+    50%{ transform:scale(1.02); }
+  }
+  @keyframes pulseReady{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.055); }
+  }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px) rotate(-2deg); }
+    40%{ transform:translateX(7px) rotate(2deg); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(4px); }
+  }
+  .breath-label{
+    position:absolute;
+    bottom:-2px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:.4px;
+  }
+  .feedback{
+    min-height:24px;
+    font-size:15px;
+    font-weight:500;
+    margin-bottom:12px;
+  }
+  .feedback.ok{ color:var(--ready); }
+  .feedback.bad{ color:var(--wait); }
+  .feedback.info{ color:var(--muted); }
+  .dots{
+    display:flex;
+    justify-content:center;
+    gap:7px;
+    margin-bottom:18px;
+  }
+  .dot{
+    width:11px; height:11px; border-radius:50%;
+    background:var(--ring-track);
+    transition:background .25s ease, transform .25s ease;
+  }
+  .dot.filled{ background:var(--ready); transform:scale(1.15); }
+  .stats{
+    display:flex;
+    justify-content:space-around;
+    border-top:1px solid #333a7a;
+    padding-top:16px;
+    margin-bottom:16px;
+  }
+  .stat b{
+    display:block;
+    font-family:'Cairo', sans-serif;
+    font-size:20px;
+    color:var(--text);
+  }
+  .stat span{
+    font-size:12px;
+    color:var(--muted);
+  }
+  .next-btn{
+    width:100%;
+    padding:13px;
+    border-radius:16px;
+    border:none;
+    font-family:'Cairo', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:not-allowed;
+    background:#232759;
+    color:#565c99;
+    transition:all .25s ease;
+  }
+  .next-btn.unlocked{
+    cursor:pointer;
+    background:linear-gradient(135deg, var(--ready), #23b06a);
+    color:#00291a;
+    box-shadow:0 8px 24px -6px #3ddc8466;
+  }
+  .next-btn.unlocked:hover{ transform:translateY(-1px); }
+  .reset{
+    margin-top:14px;
+    background:none;
+    border:1px solid #3a4088;
+    color:var(--muted);
+    font-family:'Tajawal';
+    font-size:12.5px;
+    padding:7px 14px;
+    border-radius:20px;
+    cursor:pointer;
+  }
+  .reset:hover{ color:var(--text); border-color:var(--wait); }
+
+  .balloons-layer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:999;
+  }
+  .balloon{
+    position:absolute;
+    bottom:-80px;
+    font-size:42px;
+    opacity:0;
+    will-change:transform, opacity;
+    animation-name:balloon-rise;
+    animation-timing-function:ease-out;
+    animation-fill-mode:forwards;
+  }
+  @keyframes balloon-rise{
+    0%{
+      transform:translateY(0) translateX(0) rotate(var(--sway-start, -6deg));
+      opacity:0;
+    }
+    10%{ opacity:1; }
+    50%{
+      transform:translateY(-55vh) translateX(var(--drift, 20px)) rotate(var(--sway-mid, 6deg));
+    }
+    85%{ opacity:1; }
+    100%{
+      transform:translateY(-115vh) translateX(calc(var(--drift, 20px) * -1)) rotate(var(--sway-start, -6deg));
+      opacity:0;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="balloons-layer" id="balloonsLayer"></div>
+<div class="card">
+  <p class="eyebrow">تدريب ضبط النفس</p>
+  <h1>انتظر... ثم اضغط</h1>
+  <p class="subtitle">أحمر = انتظر 🔴 &nbsp;|&nbsp; أخضر = اضغط 🟢</p>
+  <p class="stage-label">المرحلة <b id="stageNum">1</b> — مدة الانتظار: <b id="stageTime">5</b> ثانية</p>
+
+  <div class="stage">
+    <svg viewBox="0 0 236 236">
+      <circle class="track" cx="118" cy="118" r="103"></circle>
+      <circle id="ring" class="progress" cx="118" cy="118" r="103"></circle>
+    </svg>
+    <button id="btn" class="btn">ابدأ</button>
+    <div class="breath-label" id="breathLabel">شهيق</div>
+  </div>
+
+  <p class="feedback info" id="feedback">اضغط "ابدأ" لتبدأ أول محاولة</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="best">0</b><span>أفضل سلسلة</span></div>
+  </div>
+
+  <button class="next-btn" id="nextBtn" disabled>أكمل ٥ محاولات صحيحة متتالية لفتح المرحلة التالية 🔒</button>
+  <button class="reset" id="resetBtn">إعادة البدء من جديد</button>
+</div>
+
+<script>
+const ring = document.getElementById('ring');
+const btn = document.getElementById('btn');
+const feedback = document.getElementById('feedback');
+const breathLabel = document.getElementById('breathLabel');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const stageNumEl = document.getElementById('stageNum');
+const stageTimeEl = document.getElementById('stageTime');
+const dotsEl = document.getElementById('dots');
+const nextBtn = document.getElementById('nextBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+const R = 103;
+const CIRC = 2 * Math.PI * R;
+ring.style.strokeDasharray = CIRC;
+ring.style.strokeDashoffset = CIRC;
+
+// Stage durations in seconds: 5s up to 60s
+const STAGE_SECONDS = [5, 10, 15, 20, 30, 40, 50, 60];
+const REQUIRED_STREAK = 5;
+
+let score = 0, best = 0;
+let stageIndex = 0;
+let stageStreak = 0;
+let stageUnlocked = false;
+let phase = 'idle'; // idle | waiting | ready
+let waitStart = 0, waitDuration = STAGE_SECONDS[0] * 1000;
+let rafId = null, flickerTimeout = null, breathTimeout = null;
+
+let voices = [];
+let arVoice = null;
+function loadVoices(){
+  voices = speechSynthesis.getVoices();
+  arVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ar')) || null;
+}
+if('speechSynthesis' in window){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    const doSpeak = ()=>{
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ar-SA';
+      if(arVoice) u.voice = arVoice;
+      u.rate = 1.05;
+      u.pitch = 1.35;
+      u.volume = 1;
+      speechSynthesis.speak(u);
+    };
+    if(speechSynthesis.getVoices().length === 0){
+      loadVoices();
+      setTimeout(doSpeak, 250);
+    } else {
+      doSpeak();
+    }
+  }catch(e){}
+}
+
+function audioTone(freq, dur, type='sine'){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + dur + 0.05);
+  }catch(e){}
+}
+
+const balloonsLayer = document.getElementById('balloonsLayer');
+const BALLOON_EMOJIS = ['🎈','🎈','🎈','🎈'];
+
+function spawnBalloons(count){
+  for(let i=0; i<count; i++){
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.textContent = BALLOON_EMOJIS[Math.floor(Math.random()*BALLOON_EMOJIS.length)];
+    const leftPct = 5 + Math.random()*90;
+    b.style.left = leftPct + '%';
+    const size = 30 + Math.random()*26;
+    b.style.fontSize = size + 'px';
+    const duration = 2.6 + Math.random()*1.4;
+    const delay = Math.random()*0.35;
+    b.style.animationDuration = duration + 's';
+    b.style.animationDelay = delay + 's';
+    b.style.setProperty('--drift', (Math.random()*60 - 30) + 'px');
+    b.style.setProperty('--sway-start', (Math.random()*10 - 5) + 'deg');
+    b.style.setProperty('--sway-mid', (Math.random()*10 - 5) + 'deg');
+    balloonsLayer.appendChild(b);
+    setTimeout(()=> b.remove(), (duration + delay) * 1000 + 200);
+  }
+}
+
+// Cheerful ascending fanfare played on success — pure Web Audio, so it
+// always plays even in webviews that block speechSynthesis.
+function playSuccessCue(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5]; // C5 E5 G5 C6 E6
+    notes.forEach((freq, i)=>{
+      setTimeout(()=> audioTone(freq, 0.24, 'triangle'), i * 85);
+    });
+  }catch(e){}
+}
+
+function setFeedback(text, cls){
+  feedback.textContent = text;
+  feedback.className = 'feedback ' + cls;
+}
+
+function renderDots(){
+  dotsEl.innerHTML = '';
+  for(let i=0;i<REQUIRED_STREAK;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < stageStreak ? ' filled' : '');
+    dotsEl.appendChild(d);
+  }
+}
+
+function updateStats(){
+  scoreEl.textContent = score;
+  bestEl.textContent = best;
+  stageNumEl.textContent = stageIndex + 1;
+  stageTimeEl.textContent = STAGE_SECONDS[stageIndex];
+  renderDots();
+}
+
+function cycleBreath(){
+  breathLabel.textContent = breathLabel.textContent === 'شهيق' ? 'زفير' : 'شهيق';
+  breathTimeout = setTimeout(cycleBreath, 2000);
+}
+
+function maybeFlicker(){
+  if(phase !== 'waiting' || stageIndex < 2) { scheduleFlicker(); return; }
+  if(Math.random() < 0.35){
+    btn.classList.add('flicker');
+    setTimeout(()=>{ btn.classList.remove('flicker'); }, 260);
+  }
+  scheduleFlicker();
+}
+function scheduleFlicker(){
+  if(phase !== 'waiting') return;
+  flickerTimeout = setTimeout(maybeFlicker, 900 + Math.random()*900);
+}
+
+function startRound(){
+  phase = 'waiting';
+  waitStart = performance.now();
+  waitDuration = STAGE_SECONDS[stageIndex] * 1000;
+  btn.textContent = 'انتظر…';
+  btn.classList.remove('ready');
+  ring.classList.remove('ready');
+  speak('انتظر');
+  setFeedback(stageIndex >= 2 ? 'انتبه: قد يومض الزر بشكل خادع — لا تنخدع' : 'راقب الحلقة الحمراء تمتلئ ببطء', 'info');
+  breathLabel.style.opacity = 1;
+  clearTimeout(breathTimeout);
+  cycleBreath();
+  clearTimeout(flickerTimeout);
+  scheduleFlicker();
+  rafId = requestAnimationFrame(tick);
+}
+
+function tick(){
+  if(phase !== 'waiting') return;
+  const elapsed = performance.now() - waitStart;
+  const progress = Math.min(elapsed / waitDuration, 1);
+  ring.style.strokeDashoffset = CIRC * (1 - progress);
+  if(progress >= 1){
+    enterReady();
+    return;
+  }
+  rafId = requestAnimationFrame(tick);
+}
+
+function enterReady(){
+  phase = 'ready';
+  clearTimeout(flickerTimeout);
+  btn.classList.remove('flicker');
+  btn.classList.add('ready');
+  ring.classList.add('ready');
+  btn.textContent = 'اضغط الآن ✨';
+  speak('اضغط');
+  setFeedback('الآن! اضغط', 'ok');
+}
+
+function unlockNextIfReady(){
+  if(stageStreak >= REQUIRED_STREAK && !stageUnlocked){
+    stageUnlocked = true;
+    nextBtn.disabled = false;
+    nextBtn.classList.add('unlocked');
+    if(stageIndex < STAGE_SECONDS.length - 1){
+      nextBtn.textContent = 'المرحلة التالية مفتوحة 🔓 اضغط للمتابعة';
+    } else {
+      nextBtn.textContent = 'أتممت كل المراحل! 🏆 اضغط للاستمرار بالتحدي';
+    }
+    spawnBalloons(24);
+  }
+}
+
+function onPress(){
+  if(phase === 'idle') return;
+  if(phase === 'ready'){
+    playSuccessCue();
+    score += 10 + stageIndex * 2;
+    stageStreak = Math.min(stageStreak + 1, REQUIRED_STREAK);
+    best = Math.max(best, stageStreak);
+    setFeedback('أحسنت! انتظرت بصبر 🌟', 'ok');
+    updateStats();
+    unlockNextIfReady();
+    spawnBalloons(10);
+    speak('أحسنت! ممتاز!');
+    setTimeout(()=>{ if(phase!=='idle') startRound(); }, 900);
+  } else if(phase === 'waiting'){
+    audioTone(160, 0.25, 'sawtooth');
+    if(navigator.vibrate) navigator.vibrate(120);
+    stageStreak = 0;
+    cancelAnimationFrame(rafId);
+    clearTimeout(flickerTimeout);
+    clearTimeout(breathTimeout);
+    btn.classList.add('shake');
+    setFeedback('لسه بدري! جرّب تستنى أكتر شوي 💛', 'bad');
+    updateStats();
+    setTimeout(()=>{
+      btn.classList.remove('shake');
+      ring.style.strokeDashoffset = CIRC;
+      startRound();
+    }, 700);
+  }
+}
+
+btn.addEventListener('click', function initOrPress(){
+  if(phase === 'idle'){
+    startRound();
+  } else {
+    onPress();
+  }
+});
+
+nextBtn.addEventListener('click', ()=>{
+  if(!stageUnlocked) return;
+  if(stageIndex < STAGE_SECONDS.length - 1){
+    stageIndex += 1;
+  }
+  stageStreak = 0;
+  stageUnlocked = false;
+  nextBtn.disabled = true;
+  nextBtn.classList.remove('unlocked');
+  nextBtn.textContent = 'أكمل ٥ محاولات صحيحة متتالية لفتح المرحلة التالية 🔒';
+  updateStats();
+  startRound();
+});
+
+resetBtn.addEventListener('click', ()=>{
+  cancelAnimationFrame(rafId);
+  clearTimeout(flickerTimeout);
+  clearTimeout(breathTimeout);
+  speechSynthesis.cancel();
+  score = 0; best = 0; stageIndex = 0; stageStreak = 0; stageUnlocked = false;
+  phase = 'idle';
+  ring.style.strokeDashoffset = CIRC;
+  ring.classList.remove('ready');
+  btn.classList.remove('ready','flicker','shake');
+  btn.textContent = 'ابدأ';
+  breathLabel.style.opacity = 0;
+  nextBtn.disabled = true;
+  nextBtn.classList.remove('unlocked');
+  nextBtn.textContent = 'أكمل ٥ محاولات صحيحة متتالية لفتح المرحلة التالية 🔒';
+  updateStats();
+  setFeedback('اضغط "ابدأ" لتبدأ أول محاولة', 'info');
+});
+
+breathLabel.style.opacity = 0;
+updateStats();
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
